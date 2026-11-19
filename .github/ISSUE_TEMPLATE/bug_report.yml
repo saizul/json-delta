@@ -1,0 +1,41 @@
+name: Bug report
+description: A wrong diff, a patch that applies incorrectly, or a CLI problem
+labels: [bug]
+body:
+  - type: textarea
+    id: input
+    attributes:
+      label: Input
+      description: The two documents (or the document and the patch), as small as you can make them, and any options such as objectHash.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: The code or command you ran and the output or error you got.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      description: If another JSON Patch implementation behaves differently, say which one.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: json-delta version
+      placeholder: '0.1.0'
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Runtime and OS
+      placeholder: 'Node 22.12, Ubuntu 24.04'
+    validations:
+      required: true

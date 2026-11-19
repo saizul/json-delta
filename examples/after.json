@@ -1,0 +1,11 @@
+{
+  "name": "shop-api",
+  "version": "1.5.0",
+  "features": { "search": true, "export": true },
+  "users": [
+    { "id": 2, "name": "Linus", "role": "dev" },
+    { "id": 3, "name": "Grace", "role": "admin" },
+    { "id": 1, "name": "Ada", "role": "admin" },
+    { "id": 4, "name": "Barbara", "role": "dev" }
+  ]
+}

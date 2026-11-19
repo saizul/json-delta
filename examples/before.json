@@ -1,0 +1,10 @@
+{
+  "name": "shop-api",
+  "version": "1.4.0",
+  "features": { "search": true, "beta": true },
+  "users": [
+    { "id": 1, "name": "Ada", "role": "admin" },
+    { "id": 2, "name": "Linus", "role": "dev" },
+    { "id": 3, "name": "Grace", "role": "dev" }
+  ]
+}
