@@ -2,6 +2,7 @@ export { applyOperation, applyPatch, validatePatch } from './apply.js';
 export { changes, diff } from './diff.js';
 export { type ErrorCode, JsonDeltaError } from './errors.js';
 export { type FormatOptions, formatChanges } from './format.js';
+export { invertPatch } from './invert.js';
 export { applyMergePatch, createMergePatch } from './merge.js';
 export {
   appendPointer,

@@ -76,21 +76,18 @@ These are deliberately small. Each one lists where to start.
    tests in `test/cli.test.ts`.
 2. **`--summary --json`**: print `summarize()` as JSON. A few lines in
    `src/cli/run.ts` plus a test.
-3. **`invertPatch(patch)`**: for patches made with `invertible: true`, return
-   the patch that undoes it. Add `src/invert.ts`, export it from
-   `src/index.ts`, and test that applying both returns the original.
-4. **Show the old value of moves in the summary**: today `--summary` lists
+3. **Show the old value of moves in the summary**: today `--summary` lists
    only the target path of a `move`; print `/from -> /path`. See the
    `summary` case in `src/cli/run.ts`.
-5. **More conformance tests**: port cases from the community
+4. **More conformance tests**: port cases from the community
    `json-patch-tests` suite (`tests.json`) into a new
    `test/conformance.test.ts`, written as data with a short loop.
-6. **`--fail-on <kinds>`**: exit 1 only for some kinds of change, e.g.
+5. **`--fail-on <kinds>`**: exit 1 only for some kinds of change, e.g.
    `--fail-on remove,replace` to allow additions in CI. Use
    `summarize()` in `src/cli/run.ts`.
-7. **A `diff` example for React state**: add `examples/undo-stack.mjs`
+6. **A `diff` example for React state**: add `examples/undo-stack.mjs`
    that records `diff()` patches as an undo history and replays them.
-8. **Truncation option for the CLI**: expose `maxValueLength` from
+7. **Truncation option for the CLI**: expose `maxValueLength` from
    `formatChanges()` as `--max-width <N>`.
 
 ## Pull requests

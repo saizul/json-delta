@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { applyMergePatch, applyPatch, createMergePatch, diff, type JsonValue } from '../src/index.js';
+import {
+  applyMergePatch,
+  applyPatch,
+  createMergePatch,
+  diff,
+  invertPatch,
+  type JsonValue,
+} from '../src/index.js';
 
 /** Small seeded PRNG (mulberry32) so failures are reproducible. */
 function random(seed: number) {
@@ -69,6 +76,20 @@ describe('fuzz', () => {
         assert.deepEqual(applyPatch(a, JSON.parse(JSON.stringify(patch))), b);
       }
       assert.deepEqual(diff(a, a), []);
+    }
+  });
+
+  it('invertPatch undoes diff(a, b) for 2,000 random pairs', () => {
+    const rand = random(1234);
+    for (let n = 0; n < 1000; n++) {
+      const a = generate(rand, 4);
+      const b = mutate(rand, a, 4);
+      const invertible = diff(a, b, { invertible: true, objectHash: n % 2 ? 'id' : undefined });
+      assert.deepEqual(applyPatch(b, invertPatch(invertible)), a, `case ${n} from tests`);
+      const plain = diff(a, b, { objectHash: n % 2 ? 'id' : undefined });
+      const undo = invertPatch(plain, a);
+      assert.deepEqual(applyPatch(b, undo), a, `case ${n} with original`);
+      assert.deepEqual(applyPatch(a, invertPatch(undo)), b, `case ${n} inverse of inverse`);
     }
   });
 

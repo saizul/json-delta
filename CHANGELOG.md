@@ -6,6 +6,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `invertPatch(patch, original?)` returns the patch that undoes `patch`.
+  Patches made with `invertible: true` are inverted from their `test`
+  operations alone; with the original document any valid patch can be
+  inverted, including `copy`, `-` appends and `add` over an existing member.
+  The inverse carries its own `test` operations, so it is invertible too.
+
 ## [0.1.0] - 2026-11-19
 
 ### Added
