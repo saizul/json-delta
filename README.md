@@ -18,6 +18,7 @@ standard RFC 6902 JSON Patch you can send, store and apply.
 - **Apply** JSON Patches with every RFC 6902 rule, including `test`, `move`,
   `copy`, `-` and atomic failure. All 16 examples from the RFC's appendix
   are in the test suite.
+- **Undo** any patch with `invertPatch()`, for undo stacks and rollbacks.
 - **Merge patches** ([RFC 7386](https://www.rfc-editor.org/rfc/rfc7386)):
   create and apply them.
 - **JSON Pointer** ([RFC 6901](https://www.rfc-editor.org/rfc/rfc6901))
@@ -220,6 +221,30 @@ Members the RFC does not define (such as `"xyz": 123`) are ignored.
 Applies one operation in place and returns the document (a new value only
 when the root is replaced). `index` is used in error messages.
 
+### `invertPatch(patch, original?)`
+
+Returns the patch that undoes `patch`, for undo stacks, rollbacks and audit
+logs: `applyPatch(applyPatch(a, patch), invertPatch(patch, a))` deep-equals
+`a`.
+
+- Without `original`, old values come from the `test` before each `remove`
+  and `replace`, so the patch must come from `diff(a, b, { invertible: true })`.
+  Otherwise it throws `INVALID_PATCH` with the failing `operationIndex`.
+- With `original` (the document the patch applies to), any valid patch can be
+  inverted, including `copy`, `-` appends and `add` over an existing member.
+  The patch is checked against `original` on the way, so a failing `test`
+  throws `TEST_FAILED`.
+
+The inverse carries a `test` before each `remove` and `replace`, so undoing a
+document that changed in the meantime fails instead of losing data, and it
+can itself be inverted again.
+
+```ts
+const patch = diff(before, after, { invertible: true });
+const undo = invertPatch(patch);
+applyPatch(after, undo); // deep-equals `before`
+```
+
 ### `validatePatch(patch)`
 
 Checks that `patch` is an array of well-formed operations without applying
@@ -366,7 +391,6 @@ Ideas, many of them marked "good first issue":
 
 - `--ignore <pointer>` to skip volatile fields like timestamps (good first issue)
 - `--json` output for `--summary` (good first issue)
-- `invertPatch()` to undo a patch created with `invertible: true` (good first issue)
 - A side-by-side `--format=tree` view for the CLI
 - Detect moves without `objectHash` when an equal value appears elsewhere
 - Optional `copy` detection for duplicated subtrees
